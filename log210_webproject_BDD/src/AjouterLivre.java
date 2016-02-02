@@ -22,20 +22,24 @@ public class AjouterLivre{
 	
 	public void ChercherInfo(String identifiantIndustriel)
 	{
+		System.out.println("yolosweg1");
 		RechercheLivre queryLivre = new RechercheLivre(identifiantIndustriel);
 		if(queryLivre.GetAuteur() != null)
 		{
 			livreAAjouter.SetAuteur(queryLivre.GetAuteur());
 			auteurTrouver = true;
+			System.out.println(queryLivre.GetAuteur());
 		}
 		if(queryLivre.GetISBN() != null)
 		{
 			livreAAjouter.SetISBN(queryLivre.GetISBN());
 			ISBNTrouver = true;
+			System.out.println(queryLivre.GetISBN());
 		}
 		if(queryLivre.GetTitre() != null)
 		{
 			livreAAjouter.SetTitre(queryLivre.GetTitre());
+			System.out.println(queryLivre.GetTitre());
 			titreTrouver = true;
 		}
 		if(queryLivre.GetNbPage() != null)
@@ -53,11 +57,17 @@ public class AjouterLivre{
 	
 	public void FinaliserAjoutLivre()
 	{
+		
 		setConnection_log210 connectionBD = new setConnection_log210();
 		if (nouveauLivre)
 		{
+
 			try{connectionBD.insertLivre(livreAAjouter.GetTitre(),livreAAjouter.GetAuteur(),
 					livreAAjouter.GetISBN(),String.valueOf(livreAAjouter.GetPrixAffiché()), Integer.parseInt(livreAAjouter.GetNbPage()));
+			System.out.println(livreAAjouter.GetTitre());
+			System.out.println(livreAAjouter.GetAuteur());
+			System.out.println(livreAAjouter.GetISBN());
+			System.out.println(livreAAjouter.GetPrixAffiché());
 			}
 			catch(Exception e){}
 			finally{}

@@ -206,17 +206,17 @@ public class setConnection_log210{
 	  
 	  public void insertLivre(String titre,String auteur,String isbn,String prix, int nbPages)throws Exception{
 		  try{
+			  System.out.println("insert livre 1");
 		      // This will load the MySQL driver, each DB has its own driver
 		      Class.forName("com.mysql.jdbc.Driver");
 		      // Setup the connection with the DB
 		      connect = DriverManager
 		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
 		              + "user=sqluser&password=sqluserpw");
-		      
+		      System.out.println("insert livre 2");
 		   // PreparedStatements can use variables and are more efficient
 		      preparedStatement = connect
 		          .prepareStatement("insert into  iteration_bdd.livre values (default, ?, ?, ?, ?, ?, ?)");
-		      // "password, email, type, phone, from iteration_bdd.compte");
 		      // Parameters start with 1
 		      preparedStatement.setString(1, titre);
 		      preparedStatement.setString(2, auteur);
@@ -224,8 +224,9 @@ public class setConnection_log210{
 		      preparedStatement.setBoolean(4, false);
 		      preparedStatement.setString(5, prix);
 		      preparedStatement.setInt(6, nbPages);
+		      System.out.println("insert livre3");
 		      preparedStatement.executeUpdate();
-		  
+		      System.out.println("insert livre4");
 		  } 
 		  catch (Exception e) {
 			 throw e;
@@ -292,7 +293,7 @@ public class setConnection_log210{
 
 		      //Selecting all books with the right ISBN in the database (there should only be one)
 		      preparedStatement = connect
-		          .prepareStatement("SELECT username,isbn,etat FROM iteration_bdd.livre WHERE isbn= ? ; ");
+		          .prepareStatement("SELECT titre,etat,isbn,auteur,prix,reserver FROM iteration_bdd.livre WHERE isbn= ? ; ");
 		      preparedStatement.setString(1, ISBN);
 		      resultSet = preparedStatement.executeQuery();
 		      readBookData(resultSet);
@@ -429,13 +430,6 @@ public class setConnection_log210{
 			 tabLivre[2] = prix;
 			 tabLivre[3] = nbDePage;
 		 }
-		 
-		 
-
-		 
-		 System.out.println("Titre: " + tabLivre[0]);
-		 System.out.println("Auteur: " + tabLivre[1]);
-		 System.out.println("Nombre de Pages: " + tabLivre[2]);
 		 
 		 return;	
 	 }

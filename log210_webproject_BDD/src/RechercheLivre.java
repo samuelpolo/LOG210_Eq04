@@ -17,8 +17,7 @@ public class RechercheLivre {
 		
 		if(info[0]==null)
 		{
-			System.out.println("pas d'info1");
-			RechercheLivreGoogle googleQuery = new RechercheLivreGoogle(identifiantIndustriel);			
+			RechercheLivreGoogle googleQuery = new RechercheLivreGoogle(identifiantIndustriel);		
 			try{info = connectionBD.readLivre(googleQuery.GetISBN());}
 			catch(Exception e){}
 			finally{}

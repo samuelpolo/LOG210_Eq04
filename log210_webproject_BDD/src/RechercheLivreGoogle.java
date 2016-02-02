@@ -1,7 +1,7 @@
 
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.JsonFactory;
+//import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.books.Books;
 import com.google.api.services.books.Books.Volumes.List;
@@ -19,16 +19,14 @@ public class RechercheLivreGoogle {
 	
 	public RechercheLivreGoogle(String demande)
 	{		
-		
-		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-		
+		System.out.print(demande);
+		JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 		try{
 			
 			if(demande.length() == 13 || demande.length() == 10)
 			{
 				demande = "isbn:" + demande;
 			}
-			
 			// Création de la demande
 		    final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), jsonFactory, null)
 		        .setApplicationName(NOM_APPLICATION)
@@ -41,7 +39,6 @@ public class RechercheLivreGoogle {
 		    Volumes volumes = listVolumes.execute();
 		    
 		    lesVolumes = volumes.getItems();
-
 		} catch(Exception e){}
 	}
 	
