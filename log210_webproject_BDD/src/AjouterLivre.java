@@ -22,7 +22,6 @@ public class AjouterLivre{
 	
 	public void ChercherInfo(String identifiantIndustriel)
 	{
-		System.out.println("yolosweg1");
 		RechercheLivre queryLivre = new RechercheLivre(identifiantIndustriel);
 		if(queryLivre.GetAuteur() != null)
 		{
@@ -53,9 +52,10 @@ public class AjouterLivre{
 			prixTrouver = true;
 		}
 		nouveauLivre = queryLivre.EstNouveauLivre();
+		System.out.println(nouveauLivre);
 	}
 	
-	public void FinaliserAjoutLivre()
+	public void FinaliserAjoutLivre()	
 	{
 		
 		setConnection_log210 connectionBD = new setConnection_log210();
@@ -64,6 +64,8 @@ public class AjouterLivre{
 
 			try{connectionBD.insertLivre(livreAAjouter.GetTitre(),livreAAjouter.GetAuteur(),
 					livreAAjouter.GetISBN(),String.valueOf(livreAAjouter.GetPrixAffiché()), Integer.parseInt(livreAAjouter.GetNbPage()));
+				
+				
 			System.out.println(livreAAjouter.GetTitre());
 			System.out.println(livreAAjouter.GetAuteur());
 			System.out.println(livreAAjouter.GetISBN());

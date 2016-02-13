@@ -9,9 +9,8 @@ public class mainProgramTest {
 	  //tester fonction ici ("conn.fucntion(parametre);")
 	  
 	  AjouterLivre ajout = new AjouterLivre("log240");
-	  ajout.ChercherInfo("9788804643135");
-	  ajout.FinaliserAjoutLivre();
-	  
+	  ajout.ChercherInfo("9781784960674");
+	  ajout.FinaliserAjoutLivre();	  
   }
 
 } 

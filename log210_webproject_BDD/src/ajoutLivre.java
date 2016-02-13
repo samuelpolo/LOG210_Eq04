@@ -47,12 +47,7 @@ public class ajoutLivre extends HttpServlet {
 		AjouterLivre ajoutLivre = new AjouterLivre(tempUser.getLogin());
 		
 		ajoutLivre.ChercherInfo(isbn);
-		ajoutLivre.FinaliserAjoutLivre();
-		          
-		//request.getSession().setAttribute("ajoutLivre", ajoutLivre);
-		//request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
-
-		
+		ajoutLivre.FinaliserAjoutLivre();		
 		
 	}
 

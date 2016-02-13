@@ -52,8 +52,8 @@ public class connectionCompte extends HttpServlet {
 			try{
 			loginPass = conn.connectAccount(login,password);
 			}
-			catch(Exception e){
-				
+			catch(Throwable e){
+				e.printStackTrace();
 			}
 			finally{}
 			

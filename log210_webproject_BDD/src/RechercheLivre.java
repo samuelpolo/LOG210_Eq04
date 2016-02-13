@@ -15,7 +15,7 @@ public class RechercheLivre {
 		catch(Exception e){}
 		finally{}
 		
-		if(info[0]==null)
+		if(info[0]==null||info[0]=="")
 		{
 			RechercheLivreGoogle googleQuery = new RechercheLivreGoogle(identifiantIndustriel);		
 			try{info = connectionBD.readLivre(googleQuery.GetISBN());}

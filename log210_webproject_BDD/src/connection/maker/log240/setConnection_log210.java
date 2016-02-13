@@ -121,9 +121,6 @@ public class setConnection_log210{
 			  datasource = (DataSource) context.lookup("jdbc:mysql://localhost/iteration_bdd");
 			  connect = datasource.getConnection();*/
 
-
-		      
-		      
 		    //Selecting all books with the right ISBN in the database (there should only be one)
 		      preparedStatement = connect
 		          .prepareStatement("SELECT password,type,email,phone FROM iteration_bdd.compte WHERE email= ? ; ");		      		   
@@ -213,6 +210,7 @@ public class setConnection_log210{
 		      connect = DriverManager
 		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
 		              + "user=sqluser&password=sqluserpw");
+		      
 		      System.out.println("insert livre 2");
 		   // PreparedStatements can use variables and are more efficient
 		      preparedStatement = connect
@@ -224,9 +222,9 @@ public class setConnection_log210{
 		      preparedStatement.setBoolean(4, false);
 		      preparedStatement.setString(5, prix);
 		      preparedStatement.setInt(6, nbPages);
-		      System.out.println("insert livre3");
+		      System.out.println("insert livre 3");
 		      preparedStatement.executeUpdate();
-		      System.out.println("insert livre4");
+		      System.out.println("insert livre 4");
 		  } 
 		  catch (Exception e) {
 			 throw e;
@@ -423,7 +421,7 @@ public class setConnection_log210{
 		 while (resultSet.next()) {
 			 String titre = resultSet.getString("titre");
 			 String auteur = resultSet.getString("auteur");
-			 String nbDePage = resultSet.getString("etat");
+			 String nbDePage = String.valueOf(resultSet.getInt("etat"));
 			 String prix = resultSet.getString("prix");
 			 tabLivre[0] = titre;
 			 tabLivre[1] = auteur;
