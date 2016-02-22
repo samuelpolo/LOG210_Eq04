@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ajoutLivre
  */
-@WebServlet("/ajoutLivre")
-public class ajoutLivre extends HttpServlet {
+@WebServlet("/notifierLivre")
+public class notifierLivre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	setConnection_log210 conn = new setConnection_log210();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ajoutLivre() {
+    public notifierLivre() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -63,7 +63,7 @@ public class ajoutLivre extends HttpServlet {
 		
 		//Passer les infos du lvire a la prochaine page
 		request.getSession().setAttribute("livreAjoute", ajoutLivre);
-		request.getRequestDispatcher("DetailsLivreAjoute.jsp").forward(request, response);
+		request.getRequestDispatcher("AfficherDetailsLivre.jsp").forward(request, response);
 		
 		
 		//response.sendRedirect("ConnectionCompte.jsp");

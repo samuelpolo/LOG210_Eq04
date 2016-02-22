@@ -6,22 +6,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import connection.maker.log240.setConnection_log210;
 
 /**
- * Servlet implementation class finalAjoutLivre
+ * Servlet implementation class directionReservationLivre
  */
-@WebServlet("/finalAjoutLivre")
-public class finalAjoutLivre extends HttpServlet {
+@WebServlet("/directionReservationLivre")
+public class directionReservationLivre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public finalAjoutLivre() {
+    public directionReservationLivre() {
         super();
         // TODO Auto-generated constructor stub
-        
     }
 
 	/**
@@ -39,19 +37,7 @@ public class finalAjoutLivre extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		
-		
-		AjouterLivre ajoutLivre = (AjouterLivre) request.getSession().getAttribute("livreAjoute");
-		
-		//Récupérer l'état du livre entré dans le input box
-		String etatDuLivreInput = request.getParameter("etat");		
-		
-		
-		ajoutLivre.FinaliserAjoutLivre(Integer.parseInt(etatDuLivreInput));
-		
-		request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
-		
-		
-		
+		response.sendRedirect("accueilReservationLivre.jsp");
 	}
 
 }

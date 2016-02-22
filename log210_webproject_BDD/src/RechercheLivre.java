@@ -29,6 +29,7 @@ public class RechercheLivre {
 				titre = googleQuery.GetTitre();
 				ISBN = googleQuery.GetISBN();
 				nbPage = googleQuery.GetNbPage();
+				prix = googleQuery.GetPrix();
 				nouveauLivre = true;
 			}
 			else
@@ -37,6 +38,7 @@ public class RechercheLivre {
 				auteur = info[1];
 				nbPage = info[3];
 				ISBN = googleQuery.GetISBN();
+				prix = info[2];
 			}
 		}
 		else
@@ -45,6 +47,7 @@ public class RechercheLivre {
 			auteur = info[1];
 			nbPage = info[3];
 			ISBN = identifiantIndustriel;
+			prix = info[2];
 		}
 		
 	}

@@ -1,35 +1,43 @@
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import connection.maker.log240.setConnection_log210;
 
 /**
- * Servlet implementation class finalAjoutLivre
+ * Servlet implementation class listeReservation
  */
-@WebServlet("/finalAjoutLivre")
-public class finalAjoutLivre extends HttpServlet {
+@WebServlet("/listeReservation")
+public class listeReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public finalAjoutLivre() {
+    public listeReservation() {
         super();
         // TODO Auto-generated constructor stub
-        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*Reservation reservation = (Reservation) request.getSession().getAttribute("reservationListe");
+		
+		ArrayList<Livre> listeLivres= reservation.GetLivres();
+		request.setAttribute("products", products); // Will be available as ${products} in JSP
+        request.getRequestDispatcher("/WEB-INF/products.jsp").forward(request, response);*/
+		
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		
 	}
 
 	/**
@@ -38,20 +46,6 @@ public class finalAjoutLivre extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		
-		
-		AjouterLivre ajoutLivre = (AjouterLivre) request.getSession().getAttribute("livreAjoute");
-		
-		//Récupérer l'état du livre entré dans le input box
-		String etatDuLivreInput = request.getParameter("etat");		
-		
-		
-		ajoutLivre.FinaliserAjoutLivre(Integer.parseInt(etatDuLivreInput));
-		
-		request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
-		
-		
-		
 	}
 
 }

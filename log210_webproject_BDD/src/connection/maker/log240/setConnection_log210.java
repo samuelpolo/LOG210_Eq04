@@ -1,6 +1,7 @@
 package connection.maker.log240;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +14,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.http.impl.cookie.DateUtils;
+
+
 
 public class setConnection_log210{
 	  private Context context = null;
@@ -24,6 +28,8 @@ public class setConnection_log210{
 	  
 	  public String[] tabLivre = new String[4];
 	  public String[] tabCompte = new String[4];
+	  public ArrayList<String> ISBNList = new ArrayList<String>();
+	  public ArrayList<String> etatList = new ArrayList<String>();
 	  
 	  /** Fonction de création d'un compte dans la BDD
 	   * 
@@ -236,6 +242,48 @@ public class setConnection_log210{
 		 
 	  }
 	  
+	  public void insertReservation(String username, int ID){
+		  try{
+			  
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
+		   // PreparedStatements can use variables and are more efficient
+		      preparedStatement = connect
+		          .prepareStatement("insert into  iteration_bdd.reservation values (default, ?, ?, ?, ?)");
+		      
+		      
+		      
+		      // Parameters start with 1
+		      preparedStatement.setString(1, username);
+		      preparedStatement.setString(2, "dummy dummy");
+		      preparedStatement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+		      preparedStatement.setInt(4, ID);
+		      preparedStatement.executeUpdate();
+		      
+			   // PreparedStatements can use variables and are more efficient
+		      preparedStatement = connect
+		          .prepareStatement("UPDATE iteration_bdd.associations SET reserve=? WHERE id=?");
+		      
+		      preparedStatement.setDate(1,  new java.sql.Date(System.currentTimeMillis()));
+		      preparedStatement.setInt(2, ID);
+		      preparedStatement.executeUpdate();
+		      
+		      
+		  } 
+		  catch (Exception e) {
+
+		  } 
+		  finally {
+			  close();
+		  }
+		  
+		 
+	  }
+	  
 	  /** Fonction de supression d'un livre dans le système
 	   * 
 	   * @param isbn
@@ -279,7 +327,7 @@ public class setConnection_log210{
 	  
 	  public String[] readLivre(String ISBN) throws Exception{
 		  
-		  tabLivre = new String[3];
+		  tabLivre = new String[4];
 		  
 		  try {
 		      // This will load the MySQL driver, each DB has its own driver
@@ -307,7 +355,7 @@ public class setConnection_log210{
 		  return tabLivre;
 	  }
 	  
-	  public void associerLivre(String username,String ISBN, int etat)throws Exception{
+	  public void associerLivre(String username,String ISBN, int etat,String coop)throws Exception{
 		  try {
 		      // This will load the MySQL driver, each DB has its own driver
 		      Class.forName("com.mysql.jdbc.Driver");
@@ -318,12 +366,13 @@ public class setConnection_log210{
 
 		   // PreparedStatements can use variables and are more efficient
 		      preparedStatement = connect
-		          .prepareStatement("insert into  feedback.comments values (default, ?, ?, ?)");
+		          .prepareStatement("insert into  iteration_bdd.associations values (default, ?, ?, ?, ?, default)");
 		      // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
 		      // Parameters start with 1
 		      preparedStatement.setString(1, username);
 		      preparedStatement.setString(2, ISBN);
 		      preparedStatement.setInt(3, etat);
+		      preparedStatement.setString(4,coop);
 		      preparedStatement.executeUpdate();
 		      
 		    } catch (Exception e) {
@@ -331,6 +380,104 @@ public class setConnection_log210{
 		    } finally {
 		      close();
 		    }
+	  }
+	  
+	  public ArrayList<String> returnTitlesContaining(String partieTitre){
+		  
+		  //Reset the arrayList to be empty
+		  ISBNList = new ArrayList<String>();
+		  
+		  try{
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
+			
+		    //Selecting all books containing the partieTitre in the title column
+		      preparedStatement = connect
+		          .prepareStatement("SELECT * FROM iteration_bdd.livre WHERE titre LIKE \"%"+partieTitre+"%\" ");		      		   
+		      //System.out.println("avantSetString");
+		      //preparedStatement.setString(1, partieTitre);
+		      
+			  resultSet = preparedStatement.executeQuery();
+			  while(resultSet.next()){
+				  ISBNList.add(resultSet.getString("isbn"));
+				  System.out.println(resultSet.getString("isbn") + "par titre");
+			  }
+		      		
+		      
+			  //Selecting all books containing the partieTitre in the author column
+		      preparedStatement = connect
+		          .prepareStatement("SELECT * FROM iteration_bdd.livre WHERE auteur LIKE \"%"+partieTitre+"%\" ");		      		   
+		      
+		     // preparedStatement.setString(1, partieTitre);
+		      
+			  resultSet = preparedStatement.executeQuery();
+			      
+			  while(resultSet.next()){
+				  ISBNList.add(resultSet.getString("isbn"));
+				  System.out.println(resultSet.getString("isbn") + "par auteur");
+			  }		    			 
+
+		    	  
+		  
+		  } 
+		  catch (Exception e) {
+			 
+		  } 
+		  finally {
+
+			  close();
+		  }
+
+		  return ISBNList;
+	  }
+	  
+	  public ArrayList<String> returnAssociationContaining(String ISBN){
+		  
+		  //Reset the arrayList to be empty
+		  etatList = new ArrayList<String>();
+		  
+		  try{
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
+
+		    //Selecting all books containing the partieTitre in the title column
+		      preparedStatement = connect
+		          .prepareStatement("SELECT * FROM iteration_bdd.associations WHERE isbn= ?;");		      		   
+		      
+		      preparedStatement.setString(1, ISBN);
+		      
+			  resultSet = preparedStatement.executeQuery();
+			      
+			  while(resultSet.next()){
+				  
+				  Date now = new Date();
+				  Date previous = resultSet.getDate("reserve");
+				  
+				  if(previous==null||(now.getTime() - previous.getTime() >= 48*60*60*1000)){
+					  etatList.add(Integer.toString(resultSet.getInt("etat")));
+					  etatList.add(resultSet.getString("username"));
+					  etatList.add(Integer.toString(resultSet.getInt("ID")));
+				  }
+			  }
+		      		    			 		  
+		  } 
+		  catch (Exception e) {
+			 
+		  } 
+		  finally {
+
+			  close();
+		  }
+
+		  return etatList;
 	  }
 	  
 	  public void readDatabase() throws Exception{

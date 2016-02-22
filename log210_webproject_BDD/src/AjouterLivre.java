@@ -55,7 +55,7 @@ public class AjouterLivre{
 		System.out.println(nouveauLivre);
 	}
 	
-	public void FinaliserAjoutLivre()	
+	public void FinaliserAjoutLivre(int etatDuLivreAjouter)	
 	{
 		
 		setConnection_log210 connectionBD = new setConnection_log210();
@@ -63,7 +63,7 @@ public class AjouterLivre{
 		{
 
 			try{connectionBD.insertLivre(livreAAjouter.GetTitre(),livreAAjouter.GetAuteur(),
-					livreAAjouter.GetISBN(),String.valueOf(livreAAjouter.GetPrixAffiché()), Integer.parseInt(livreAAjouter.GetNbPage()));
+					livreAAjouter.GetISBN(),String.valueOf(100.00/*livreAAjouter.GetPrixAffiché()*/), Integer.parseInt(livreAAjouter.GetNbPage()));
 				
 				
 			System.out.println(livreAAjouter.GetTitre());
@@ -75,7 +75,7 @@ public class AjouterLivre{
 			finally{}
 		}
 		try{
-		connectionBD.associerLivre(currentUser, livreAAjouter.GetISBN(), livreAAjouter.GetÉtat());
+			connectionBD.associerLivre(currentUser, livreAAjouter.GetISBN(),etatDuLivreAjouter,"coopTest");
 		}
 		catch(Exception e){}
 		finally{}
