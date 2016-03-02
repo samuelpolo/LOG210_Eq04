@@ -62,6 +62,7 @@ public class connectionCompteGestionnaire extends HttpServlet {
 					   currentUser.setLogin(loginPass[1]);
 					   currentUser.setPassword(loginPass[0]);
 					   currentUser.setCoop(loginPass[3]);
+					   currentUser.setType(loginPass[2]);
 					          
 					   request.getSession().setAttribute("user", currentUser);
 					   request.getRequestDispatcher("optionsGestionnaire.jsp").forward(request, response);

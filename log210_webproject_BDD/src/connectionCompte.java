@@ -63,6 +63,7 @@ public class connectionCompte extends HttpServlet {
 			   currentUser.setLogin(loginPass[1]);
 			   currentUser.setPassword(loginPass[0]);
 			   currentUser.setPhone(loginPass[3]);
+			   currentUser.setType(loginPass[2]);
 			          
 			   request.getSession().setAttribute("user", currentUser);
 			   request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
