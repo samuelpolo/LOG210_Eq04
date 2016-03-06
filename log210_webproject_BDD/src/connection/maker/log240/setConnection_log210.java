@@ -106,6 +106,37 @@ public class setConnection_log210{
 		 
 	  }
 	  
+	  public void insertTransaction(String gestionnaire, String acheteur, double prix)throws Exception{
+		  try{
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
+		      
+		   // PreparedStatements can use variables and are more efficient
+		      preparedStatement = connect
+		          .prepareStatement("insert into  iteration_bdd.transactions values (default, ?, ?, ? , ?)");
+		      // "password, email, type, phone, from iteration_bdd.compte");
+		      // Parameters start with 1
+		      preparedStatement.setString(1, gestionnaire);
+		      preparedStatement.setString(2, acheteur);
+		      preparedStatement.setDouble(3,prix);
+		      preparedStatement.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+		      preparedStatement.executeUpdate();
+		  
+		  } 
+		  catch (Exception e) {
+			 throw e;
+		  } 
+		  finally {
+			  close();
+		  }
+		  
+		 
+	  }
+	  
 	  /**
 	   * Méthode de connection a un compte
 	   * @return false : le compte n'existe pas OU ce n'est pas le bon mot de passe
@@ -823,7 +854,7 @@ public class setConnection_log210{
 		  }
 	}
 	
-	public void supprimerReservation(int ID) throws Exception{
+	public void supprimerAssociation(int ID) throws Exception{
 		try{
 		      // This will load the MySQL driver, each DB has its own driver
 		      Class.forName("com.mysql.jdbc.Driver");
@@ -833,7 +864,7 @@ public class setConnection_log210{
 		              + "user=sqluser&password=sqluserpw");
 		      
 		      preparedStatement = connect
-		      .prepareStatement("delete from iteration_bdd.reservation where id= ? ; ");
+		      .prepareStatement("delete from iteration_bdd.associations where id= ? ; ");
 		      preparedStatement.setString(1, String.valueOf(ID));
 		      preparedStatement.executeUpdate();
 		  
@@ -848,7 +879,7 @@ public class setConnection_log210{
 		 
 	}
 	
-	public void supprimerAssociationAPartirDeReservation(int ID)throws Exception{
+	public void supprimerReservationAPartirDAssociation(int ID)throws Exception{
 		try{
 		      // This will load the MySQL driver, each DB has its own driver
 		      Class.forName("com.mysql.jdbc.Driver");
@@ -856,30 +887,16 @@ public class setConnection_log210{
 		      connect = DriverManager
 		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
 		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.reservation WHERE id = ?;");		      		   
-		      
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      
-			  resultSet = preparedStatement.executeQuery();
-			      
-
 				  
-			  while(resultSet.next()){
-				  				  
 					  preparedStatement2 = null;
 					  resultSet2 = null;
 					  
-					   preparedStatement2 = connect
-							      .prepareStatement("delete from iteration_bdd.associations where id= ? ; ");
-					  preparedStatement2.setString(1, String.valueOf(resultSet.getInt("idAssociation")));
+					   preparedStatement = connect
+							      .prepareStatement("delete from iteration_bdd.reservation where idAssociation= ? ; ");
+					  preparedStatement.setString(1, String.valueOf(ID));
 					  
-					  preparedStatement2.executeUpdate();
-					  
-			  }
-			  
+					  preparedStatement.executeUpdate();
+					  			  
 		      		    			 		  
 		  } 
 		  catch (Exception e) {

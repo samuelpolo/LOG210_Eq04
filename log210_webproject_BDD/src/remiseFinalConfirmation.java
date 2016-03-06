@@ -38,17 +38,24 @@ public class remiseFinalConfirmation extends HttpServlet {
 		doGet(request, response);
 		
 		int IdURL = (int) request.getSession().getAttribute("idURL");
+		User tempUser = (User) request.getSession().getAttribute("user");
+		String gestionnaire = tempUser.getLogin();
+		
+		String acheteur = (String) request.getSession().getAttribute("acheteur");
+		double prix = (double) request.getSession().getAttribute("prix");
 		
 		Recuperation recuperation = (Recuperation) request.getSession().getAttribute("reservationListe3");
 		
 		try {
-			recuperation.finaliserRecuperation(IdURL);
+			recuperation.finaliserRecuperation(IdURL,gestionnaire,acheteur,prix);
+			System.out.println("Association Id = " + IdURL + " deleted");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
+		request.getRequestDispatcher("optionsGestionnaire.jsp").forward(request, response);
 		
 		
 	}

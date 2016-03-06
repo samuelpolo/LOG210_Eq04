@@ -47,7 +47,7 @@
 	            <td>${livre.getLivre().GetPrixVente()}</td>	             
 	        </tr>	        
 	        <tr>
-	        	<td><a href="RemiseFinal?id=${livre.getId()}">Remettre cette copie à l'acheteur</a></td>
+	        	<td><a href="RemiseFinal?id=${livre.getId()}&acheteur=${livre.getAcheteur()}&prix=${livre.getLivre().GetPrixVente()}">Remettre cette copie à l'acheteur</a></td>
 	        </tr>
 	    </c:forEach>
 

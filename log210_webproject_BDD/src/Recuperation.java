@@ -60,13 +60,17 @@ public class Recuperation
 		this.currentCoop = currentCoop;
 	}
 	
-	public void finaliserRecuperation(int ID) throws Exception{
+	public void finaliserRecuperation(int ID, String currentGestionnaire, String acheteur, double prix) throws Exception{
 		
 		setConnection_log210 connectionBD = new setConnection_log210();
 		
-		connectionBD.supprimerAssociationAPartirDeReservation(ID);
+		connectionBD.insertTransaction(currentGestionnaire, acheteur, prix);
+		
+		connectionBD.supprimerReservationAPartirDAssociation(ID);
 
-		connectionBD.supprimerReservation(ID);
+		connectionBD.supprimerAssociation(ID);
+		
+		
 		
 	}
 	

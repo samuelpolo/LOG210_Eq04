@@ -32,8 +32,12 @@ public class RemiseFinal extends HttpServlet {
 				System.out.println(request.getParameter("id"));
 				
 				int IdURL = Integer.parseInt(request.getParameter("id"));
+				String acheteur = request.getParameter("acheteur");
+				double prix = Double.parseDouble(request.getParameter("prix"));
 				
 				request.getSession().setAttribute("idURL", IdURL);
+				request.getSession().setAttribute("acheteur", acheteur);
+				request.getSession().setAttribute("prix", prix);
 				//request.setAttribute("product", product); // Will be available as ${product} in JSP
 		        request.getRequestDispatcher("remiseFinal.jsp").forward(request, response);
 	}

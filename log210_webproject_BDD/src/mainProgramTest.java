@@ -9,12 +9,14 @@ public class mainProgramTest {
 	
   public static void main(String[] args) throws Exception {
 	  setConnection_log210 conn = new setConnection_log210();
+	  
+	 conn.insertTransaction("test1","test2",4.2);
 	  //conn.connectAccount("log240", "log240");
 	  //tester fonction ici ("conn.fucntion(parametre);")
 	  
 	  //conn.insertReservation("testUser", "testISBN"); 
 	  
-	  testFunc();
+	  //testFunc();
 	  
 
   }
