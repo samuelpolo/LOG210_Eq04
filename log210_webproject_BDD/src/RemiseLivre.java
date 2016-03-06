@@ -9,7 +9,7 @@ public class RemiseLivre
 	
 	public RemiseLivre(String currentCoop)
 	{
-		this.currentCoop = currentCoop;
+		this.setCurrentCoop(currentCoop);
 		livres = new ArrayList<Livre>();
 	}
 	
@@ -101,14 +101,26 @@ public class RemiseLivre
 		}
 	}
 	
-	public ArrayList<Livre> getLivres(){
+	public ArrayList<Livre> getLivres() {
 		return livres;
 	}
-	
+
+	public void setLivres(ArrayList<Livre> livres) {
+		this.livres = livres;
+	}
+
 	public void finaliserAcceptation(String coop , int ID,int etat) throws Exception
 	{
 		setConnection_log210 connectionBD = new setConnection_log210();
 		
 		connectionBD.changeCoop(coop, ID, etat);
+	}
+
+	public String getCurrentCoop() {
+		return currentCoop;
+	}
+
+	public void setCurrentCoop(String currentCoop) {
+		this.currentCoop = currentCoop;
 	}
 }
