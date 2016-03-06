@@ -25,6 +25,8 @@ public class setConnection_log210{
 	  private Statement statement = null;
 	  private PreparedStatement preparedStatement = null;
 	  public ResultSet resultSet = null;
+	  private PreparedStatement preparedStatement2 = null;
+	  public ResultSet resultSet2 = null;
 	  
 	  public String[] tabLivre = new String[4];
 	  public String[] tabCompte = new String[4];
@@ -536,6 +538,70 @@ public class setConnection_log210{
 
 		  return etatList;
 	  }
+	  	
+	  	public ArrayList<String> returnAllReservations(){
+			  
+			  //Reset the arrayList to be empty
+			  etatList = new ArrayList<String>();
+			  
+			  try{
+			      // This will load the MySQL driver, each DB has its own driver
+			      Class.forName("com.mysql.jdbc.Driver");
+			      // Setup the connection with the DB
+			      connect = DriverManager
+			          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+			              + "user=sqluser&password=sqluserpw");
+
+			    //Selecting all books containing the partieTitre in the title column
+			      preparedStatement = connect
+			          .prepareStatement("SELECT * FROM iteration_bdd.reservation;");		      		   
+			      
+			     // preparedStatement.setString(1, null);
+			      
+				  resultSet = preparedStatement.executeQuery();
+				      
+
+					  
+				  while(resultSet.next()){
+					  /*etatList.add(String.valueOf(resultSet.getInt("username")));
+					 */
+					  System.out.println(resultSet.getInt("idAssociation") + " : this is a reservation ID");
+					  
+						  preparedStatement2 = null;
+						  resultSet2 = null;
+						  
+						  preparedStatement2 = connect.
+								  prepareStatement("SELECT * FROM iteration_bdd.associations WHERE ID = ?;");
+						  preparedStatement2.setString(1, String.valueOf(resultSet.getInt("idAssociation")));
+						  
+						  resultSet2 = preparedStatement2.executeQuery();
+						 
+						  
+						  if(resultSet2.next()){
+							  
+							  System.out.println(resultSet2.getInt("id") + " this is the association");
+							  
+							  etatList.add(resultSet.getString("username"));
+							  etatList.add(resultSet.getString("idAssociation"));
+							  //etatList.add(String.valueOf(resultSet2.getInt("ID")));
+							  etatList.add(resultSet2.getString("isbn"));
+							  etatList.add(String.valueOf(resultSet2.getInt("etat")));
+						  }
+						  
+				  }
+				  
+			      		    			 		  
+			  } 
+			  catch (Exception e) {
+				 
+			  } 
+			  finally {
+
+				  close();
+			  }
+
+			  return etatList;
+		  }
 	  
 		 public ArrayList<String> returnAssociationContainingCoopNullParameterISBN(String ISBN){
 			  
@@ -557,6 +623,7 @@ public class setConnection_log210{
 			      preparedStatement.setString(1, ISBN);
 			      
 				  resultSet = preparedStatement.executeQuery();
+				  
 				      
 				  while(resultSet.next()){
 					  String testCoop = resultSet.getString("coop");
@@ -725,7 +792,7 @@ public class setConnection_log210{
 		    }
 		  }
 	
-	public void changeCoop (String coop, int ID) throws Exception{
+	public void changeCoop (String coop, int ID, int etat) throws Exception{
 		String realID = String.valueOf(ID);
 		int rs;
 		
@@ -739,20 +806,84 @@ public class setConnection_log210{
 
 		    //Selecting all books with the right ISBN in the database (there should only be one)
 		      preparedStatement = connect
-		          .prepareStatement("UPDATE iteration_bdd.associations SET coop=?  WHERE ID = ? ; ");		      		   
+		          .prepareStatement("UPDATE iteration_bdd.associations SET coop=? , etat=?  WHERE ID = ? ; ");		      		   
 		      
 		      preparedStatement.setString(1, coop);
-		      preparedStatement.setString(2, realID);
+		      preparedStatement.setString(3, realID);
+		      preparedStatement.setInt(2, etat);
 		      
 		      rs = preparedStatement.executeUpdate();
+		  } 
+		  catch (Exception e) {
+			 throw e;
+		  } 
+		  finally {
 
-			 
-
+			  close();
+		  }
+	}
+	
+	public void supprimerReservation(int ID) throws Exception{
+		try{
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
 		      
+		      preparedStatement = connect
+		      .prepareStatement("delete from iteration_bdd.reservation where id= ? ; ");
+		      preparedStatement.setString(1, String.valueOf(ID));
+		      preparedStatement.executeUpdate();
 		  
 		  } 
 		  catch (Exception e) {
 			 throw e;
+		  } 
+		  finally {
+			  close();
+		  }
+		  
+		 
+	}
+	
+	public void supprimerAssociationAPartirDeReservation(int ID)throws Exception{
+		try{
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
+
+		    //Selecting all books containing the partieTitre in the title column
+		      preparedStatement = connect
+		          .prepareStatement("SELECT * FROM iteration_bdd.reservation WHERE id = ?;");		      		   
+		      
+		      preparedStatement.setString(1, String.valueOf(ID));
+		      
+			  resultSet = preparedStatement.executeQuery();
+			      
+
+				  
+			  while(resultSet.next()){
+				  				  
+					  preparedStatement2 = null;
+					  resultSet2 = null;
+					  
+					   preparedStatement2 = connect
+							      .prepareStatement("delete from iteration_bdd.associations where id= ? ; ");
+					  preparedStatement2.setString(1, String.valueOf(resultSet.getInt("idAssociation")));
+					  
+					  preparedStatement2.executeUpdate();
+					  
+			  }
+			  
+		      		    			 		  
+		  } 
+		  catch (Exception e) {
+			 
 		  } 
 		  finally {
 

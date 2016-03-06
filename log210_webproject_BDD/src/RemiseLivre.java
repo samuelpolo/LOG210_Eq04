@@ -105,10 +105,10 @@ public class RemiseLivre
 		return livres;
 	}
 	
-	public void finaliserAcceptation(String coop , int ID) throws Exception
+	public void finaliserAcceptation(String coop , int ID,int etat) throws Exception
 	{
 		setConnection_log210 connectionBD = new setConnection_log210();
 		
-		connectionBD.changeCoop(coop, ID);
+		connectionBD.changeCoop(coop, ID, etat);
 	}
 }

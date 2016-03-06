@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class accepterFinalConfirmation
+ * Servlet implementation class listeDesReservation
  */
-@WebServlet("/accepterFinalConfirmation")
-public class accepterFinalConfirmation extends HttpServlet {
+@WebServlet("/listeDesReservation")
+public class listeDesReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public accepterFinalConfirmation() {
+    public listeDesReservation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,26 +37,24 @@ public class accepterFinalConfirmation extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		
+		
+				
 		User tempUser = (User) request.getSession().getAttribute("user");
 		String coop = tempUser.getCoop();
 		
-		int IdURL = (int) request.getSession().getAttribute("idURL");
-		int etat =  Integer.parseInt((String) request.getParameter("etat"));
+		Recuperation recuperation = new Recuperation(coop);
+		 
+		String isbnRecherche = (String) request.getParameter("info");
+		//String nomRecherche = (String) request.getParameter("utilisateurInfos");
 		
-		RemiseLivre remiseLivre = (RemiseLivre) request.getSession().getAttribute("reservationListe2");		
 		
-		try {
 			
-			remiseLivre.finaliserAcceptation(coop,IdURL,etat);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		request.getRequestDispatcher("optionsGestionnaire.jsp").forward(request, response);
-		
-		
+				
+					
+		//Passer les infos du lvire a la prochaine page
+		request.getSession().setAttribute("reservationListe3", recuperation);
+		request.getSession().setAttribute("livreListe3", recuperation.ObtenirRerservation());
+		request.getRequestDispatcher("ResultatReservationListe.jsp").forward(request, response);
 	}
 
 }

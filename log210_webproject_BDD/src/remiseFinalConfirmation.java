@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class accepterFinalConfirmation
+ * Servlet implementation class remiseFinalConfirmation
  */
-@WebServlet("/accepterFinalConfirmation")
-public class accepterFinalConfirmation extends HttpServlet {
+@WebServlet("/remiseFinalConfirmation")
+public class remiseFinalConfirmation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public accepterFinalConfirmation() {
+    public remiseFinalConfirmation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,24 +37,18 @@ public class accepterFinalConfirmation extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		
-		User tempUser = (User) request.getSession().getAttribute("user");
-		String coop = tempUser.getCoop();
-		
 		int IdURL = (int) request.getSession().getAttribute("idURL");
-		int etat =  Integer.parseInt((String) request.getParameter("etat"));
 		
-		RemiseLivre remiseLivre = (RemiseLivre) request.getSession().getAttribute("reservationListe2");		
+		Recuperation recuperation = (Recuperation) request.getSession().getAttribute("reservationListe3");
 		
 		try {
-			
-			remiseLivre.finaliserAcceptation(coop,IdURL,etat);
-			
+			recuperation.finaliserRecuperation(IdURL);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("optionsGestionnaire.jsp").forward(request, response);
+		request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
 		
 		
 	}

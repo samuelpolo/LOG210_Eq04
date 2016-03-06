@@ -8,13 +8,18 @@
 </head>
 <body>
 
-
-	<h2>Un email sera envoyé pour confirmer l'acceptation de ce livre.</h2>
-
+	<h2>Veuillez confirmer l'étatdu livre ou appuyer sur précédent pour retourner à la recherche</h2>
+	
 	<br />
 
 	<form action="accepterFinalConfirmation" method="post">
-      <input type="submit" value="Finaliser l'acceptation du livre" />
+		<input type="text" name="etat" value="${vieilEtat}" />
+    	<input type="submit" value="Finaliser l'acceptation du livre" />
     </form>
+    
+    
+    <h2>Un email sera envoyé pour confirmer l'acceptation de ce livre.</h2>
+    	
+    	
 </body>
 </html>

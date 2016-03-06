@@ -11,11 +11,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Liste des livres recherchés</title>
+<title>Insert title here</title>
 </head>
 <body>
-
-      <c:if test="${livreListe2.isEmpty()}">
+     <c:if test="${livreListe3.isEmpty()}">
       	Le livre recherché n'existe pas dans la base de données ou n'a pas d'exemplaire en attente.
       	
       	<br />
@@ -27,28 +26,28 @@
       
 		<table>
 	
-	    <c:forEach items="${livreListe2}" var="livre">
+	    <c:forEach items="${livreListe3}" var="livre">
 	    	<tr>
-	        	<td> Proprio :</td>
-	            <td>${livre.GetProprio()}</td>
+	        	<td> Acheteur :</td>
+	            <td>${livre.getAcheteur()}</td>
 	             
 	        </tr>
 	    	
 	        <tr>
 	        	<td> Titre :</td>
-	            <td>${livre.GetTitre()}</td>
+	            <td>${livre.getLivre().GetTitre()}</td>
 	             
 	        </tr>
 	        <tr>
 	        	<td> État :</td>
-	            <td>${livre.GetÉtat()}</td>
+	            <td>${livre.getLivre().GetÉtat()}</td>
 	        </tr>
 	        <tr>
 	        	<td> Prix : </td>
-	            <td>${livre.GetPrixVente()}</td>	             
+	            <td>${livre.getLivre().GetPrixVente()}</td>	             
 	        </tr>	        
 	        <tr>
-	        	<td><a href="accepterFinal?id=${livre.GetID()}&etat2=${livre.GetÉtat()}">Accepter cette copie</a></td>
+	        	<td><a href="RemiseFinal?id=${livre.getId()}">Remettre cette copie à l'acheteur</a></td>
 	        </tr>
 	    </c:forEach>
 

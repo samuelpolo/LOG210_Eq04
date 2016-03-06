@@ -13,5 +13,14 @@
       	<input type="submit" value="Rechercher" />
    		</form>
    		
+   	<br/>
+   	<br/>
+   	<br/>
+	Cliquez sur ce bouton pour qu'un étudiant récupère un livre réservé au comptoir
+	
+	<form action="listeDesReservation" method="post">
+      	<input type="submit" value="Afficher les réservations" />
+    </form>
+	   		
 </body>
 </html>
