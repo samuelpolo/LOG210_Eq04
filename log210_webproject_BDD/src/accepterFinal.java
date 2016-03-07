@@ -28,16 +28,16 @@ public class accepterFinal extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		System.out.println(request.getParameter("id"));
-		System.out.println(request.getParameter("etat2"));
 
-		
 		int IdURL = Integer.parseInt(request.getParameter("id"));
-		int vieilEtat = Integer.parseInt(request.getParameter("etat2"));				
+		int vieilEtat = Integer.parseInt(request.getParameter("etat2"));
+		String proprio = request.getParameter("proprio");
+		String titre = request.getParameter("titre");
 		
 		request.getSession().setAttribute("idURL", IdURL);
 		request.getSession().setAttribute("vieilEtat", vieilEtat);
+		request.getSession().setAttribute("proprio", proprio);
+		request.getSession().setAttribute("titre", titre);
 		
 		//request.setAttribute("product", product); // Will be available as ${product} in JSP
         request.getRequestDispatcher("AccepterFinal.jsp").forward(request, response);

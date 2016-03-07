@@ -42,6 +42,9 @@ public class accepterFinalConfirmation extends HttpServlet {
 		
 		int IdURL = (int) request.getSession().getAttribute("idURL");
 		int etat =  Integer.parseInt((String) request.getParameter("etat"));
+		String proprio =  (String) request.getSession().getAttribute("proprio");
+		System.out.println("le email envoyer dans le paramettre proprio: " + proprio);
+		String titre =  (String) request.getSession().getAttribute("titre");
 		
 		RemiseLivre remiseLivre = (RemiseLivre) request.getSession().getAttribute("reservationListe2");		
 		
@@ -53,6 +56,9 @@ public class accepterFinalConfirmation extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		MailClient envoiEmail = new MailClient(proprio, "Votre livre a bien été remis" ,
+				"Votre livre a bien été remis à la Coop" + "Titre : " + titre);
 		
 		request.getRequestDispatcher("optionsGestionnaire.jsp").forward(request, response);
 		

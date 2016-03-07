@@ -48,7 +48,7 @@
 	            <td>${livre.GetPrixVente()}</td>	             
 	        </tr>	        
 	        <tr>
-	        	<td><a href="accepterFinal?id=${livre.GetID()}&etat2=${livre.GetÉtat()}">Accepter cette copie</a></td>
+	        	<td><a href="accepterFinal?id=${livre.GetID()}&etat2=${livre.GetÉtat()}&proprio=${livre.GetProprio()}&titre=${livre.GetTitre()}">Accepter cette copie</a></td>
 	        </tr>
 	    </c:forEach>
 

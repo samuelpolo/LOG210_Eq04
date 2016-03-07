@@ -907,4 +907,54 @@ public class setConnection_log210{
 			  close();
 		  }
 	}
+	
+	public String[] getTransaction(int ID) throws Exception{
+		
+		String[] infoTransaction = new String[5];
+		
+		  try{
+		      // This will load the MySQL driver, each DB has its own driver
+		      Class.forName("com.mysql.jdbc.Driver");
+		      // Setup the connection with the DB
+		      connect = DriverManager
+		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
+		              + "user=sqluser&password=sqluserpw");
+
+		    //Selecting all books with the right ISBN in the database (there should only be one)
+		      preparedStatement = connect
+		          .prepareStatement("SELECT * FROM iteration_bdd.transactions WHERE ID= ? ; ");		      		   
+		      
+		      preparedStatement.setString(1, String.valueOf(ID));
+		      
+		      resultSet = preparedStatement.executeQuery();
+		      
+		      if(resultSet.next()){
+		    	  infoTransaction[0] = String.valueOf(resultSet.getInt("id"));
+		    	  infoTransaction[1] = resultSet.getString("gestionnaire");
+		    	  infoTransaction[2] = resultSet.getString("acheteur");
+		    	  infoTransaction[3] = String.valueOf(resultSet.getDouble("montant"));
+		    	  infoTransaction[4] = String.valueOf(resultSet.getDate("dateTransaction"));			      
+		      }
+		      else{
+		    	  infoTransaction[0] = "Something went wrong in the getTransaction() method!!!";
+		    	  infoTransaction[1] = "Something went wrong in the getTransaction() method!!!";
+		    	  infoTransaction[2] = "Something went wrong in the getTransaction() method!!!";
+		    	  infoTransaction[3] = "Something went wrong in the getTransaction() method!!!";
+		    	  infoTransaction[4] = "Something went wrong in the getTransaction() method!!!";
+		      }
+
+		    
+			 		  
+		  } 
+		  catch (Exception e) {
+			 throw e;
+		  } 
+		  finally {
+
+			  close();
+		  }
+
+		  
+		  return infoTransaction;
+	  }
 }
