@@ -32,7 +32,7 @@
 		<tr>
 		<td><a href="AccueilAjoutLivre.jsp">Confirmer la notification et retourner au menu principal</a></td>
 		</tr>
-		
+
 	</table>
 	
    

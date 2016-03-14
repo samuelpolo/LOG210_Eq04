@@ -910,7 +910,7 @@ public class setConnection_log210{
 	
 	public String[] getTransaction(int ID) throws Exception{
 		
-		String[] infoTransaction = new String[5];
+		String[] infoTransaction = new String[4];
 		
 		  try{
 		      // This will load the MySQL driver, each DB has its own driver
@@ -933,14 +933,12 @@ public class setConnection_log210{
 		    	  infoTransaction[1] = resultSet.getString("gestionnaire");
 		    	  infoTransaction[2] = resultSet.getString("acheteur");
 		    	  infoTransaction[3] = String.valueOf(resultSet.getDouble("montant"));
-		    	  infoTransaction[4] = String.valueOf(resultSet.getDate("dateTransaction"));			      
 		      }
 		      else{
 		    	  infoTransaction[0] = "Something went wrong in the getTransaction() method!!!";
 		    	  infoTransaction[1] = "Something went wrong in the getTransaction() method!!!";
 		    	  infoTransaction[2] = "Something went wrong in the getTransaction() method!!!";
 		    	  infoTransaction[3] = "Something went wrong in the getTransaction() method!!!";
-		    	  infoTransaction[4] = "Something went wrong in the getTransaction() method!!!";
 		      }
 
 		    

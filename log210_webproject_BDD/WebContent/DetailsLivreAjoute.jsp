@@ -68,5 +68,9 @@
       <input type="submit" value="Finaliser l'ajout" />
    </form>
    
+   <p>
+   		<a href="AccueilAjoutLivre.jsp">Annuler et retourner à la page principal </a>
+   </p>
+   
 </body>
 </html>

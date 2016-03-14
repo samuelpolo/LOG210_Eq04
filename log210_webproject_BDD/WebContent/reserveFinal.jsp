@@ -19,5 +19,9 @@
 	<form action="reserveFinalConfirmation" method="post">
       <input type="submit" value="Finaliser la reservation" />
     </form>
+    
+   <p>
+   		<a href="AccueilAjoutLivre.jsp">Annuler et retourner à la page précédente </a>
+   </p>
 </body>
 </html>

@@ -20,8 +20,7 @@
       	<br />
       	
       	<br />
-      	
-      	<a href="optionsGestionnaire.jsp">Retourner à la page précédente</a>   	
+ 	
       </c:if>
       
 		<table>
@@ -50,7 +49,9 @@
 	        	<td><a href="RemiseFinal?id=${livre.getId()}&acheteur=${livre.getAcheteur()}&prix=${livre.getLivre().GetPrixVente()}">Remettre cette copie à l'acheteur</a></td>
 	        </tr>
 	    </c:forEach>
-
+	    <p>
+   			<a href="optionsGestionnaire.jsp">Annuler et retourner à la page principal </a>
+   		</p>
 	</table>
 </body>
 </html>

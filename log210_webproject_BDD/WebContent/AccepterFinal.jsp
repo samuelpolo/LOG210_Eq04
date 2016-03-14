@@ -20,6 +20,8 @@
     
     <h2>Un email sera envoyé pour confirmer l'acceptation de ce livre.</h2>
     	
-    	
+    	   <p>
+   		<a href="optionsGestionnaire.jsp">Annuler et retourner à la page précédente </a>
+   </p>
 </body>
 </html>

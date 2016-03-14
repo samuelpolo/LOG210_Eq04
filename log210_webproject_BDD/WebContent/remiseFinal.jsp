@@ -16,5 +16,9 @@
       <input type="submit" value="Finaliser la remise et enregistrer la transaction" />
     </form>
     
+    <p>
+   			<a href="optionsGestionnaire.jsp">Annuler et retourner à la page principal </a>
+   	</p>
+   	
 </body>
 </html>
