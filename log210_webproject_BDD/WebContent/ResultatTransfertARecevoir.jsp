@@ -10,10 +10,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Liste des transferts à expédier de votre Coopérative</title>
+<title>Insert title here</title>
 </head>
 <body>
-     <c:if test="${listeTransfertAExpedier.isEmpty()}">
+    <c:if test="${listeTransfertAExpedier.isEmpty()}">
       	Votre coopérative n'a aucun livre à expédier pour le moment.
       	
       	<br />
@@ -49,7 +49,7 @@
 	            <td>CoopPrincipale</td>	             
 	        </tr>		        
 	        <tr>
-	        	<td><a href="transfertAExpedierFinal?id=${transfert.getId()}">Envoyer cet exemplaire</a></td>
+	        	<td><a href="transfertARecevoirFinal?id=${transfert.getId()}">Recevoir cet exemplaire</a></td>
 	        </tr>
 	    </c:forEach>
 	    <p>
