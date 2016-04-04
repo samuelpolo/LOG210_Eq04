@@ -49,7 +49,7 @@
 	            <td>CoopPrincipale</td>	             
 	        </tr>		        
 	        <tr>
-	        	<td><a href="transfertAExpedierFinal?id=${transfert.getId()}">Envoyer cet exemplaire</a></td>
+	        	<td><a href="TransfertAExpedierFinal?id=${transfert.getId()}">Envoyer cet exemplaire</a></td>
 	        </tr>
 	    </c:forEach>
 	    <p>

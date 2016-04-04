@@ -31,12 +31,6 @@
 	<form action="listeDesTransfertsAExpedier" method="post">
       	<input type="submit" value="Afficher les transferts à expédier pour votre Coop" />
     </form>
-    
-    Afficher tous les transferts à recevoir
-	
-	<form action="listeDesTransfertsARecevoir" method="post">
-      	<input type="submit" value="Afficher les transferts à recevoir pour votre Coop" />
-    </form>
 	   		
 </body>
 </html>
