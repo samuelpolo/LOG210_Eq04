@@ -38,8 +38,7 @@ public class setConnection_log210{
 	  
 	  public ArrayList<String> singleCompte = new ArrayList<String>();
 	  public ArrayList<String> singleCoop = new ArrayList<String>();
-	  public ArrayList<String> singleLivre = new ArrayList<String>();	
-	  public ArrayList<String> singleAssociation = new ArrayList<String>();
+	  public ArrayList<String> singleLivre = new ArrayList<String>();	  
 	  
 	  
 	  /** Fonction de création d'un compte dans la BDD
@@ -1340,8 +1339,6 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 
 			  singleLivre.add(resultSet.getString("prix"));	
 			  singleLivre.add(String.valueOf(resultSet.getString("prix")));
-			  singleLivre.add(String.valueOf(resultSet.getInt("etat")));
-
 		  }		      				      
 		  
 	  } 
@@ -1355,52 +1352,4 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 	
 	  return singleLivre;
 	}
-	
-	public ArrayList<String> getAssociationById(int ID){
-		//Reset the arrayList to be empty
-		singleAssociation = new ArrayList<String>();
-		
-		  
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-			
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.associations WHERE id = ? ;");		      		   
-
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  while(resultSet.next()){
-				  
-				  singleAssociation.add("yesss");
-				  
-				  singleAssociation.add(String.valueOf(resultSet.getInt("ID")));
-				  singleAssociation.add(resultSet.getString("username"));
-				  singleAssociation.add(resultSet.getString("isbn"));		
-				  singleAssociation.add(String.valueOf(resultSet.getInt("etat")));
-				  singleAssociation.add(resultSet.getString("coop"));
-				  singleAssociation.add(String.valueOf(resultSet.getDate("reserve")));
-
-			  }		      				      			  
-		  } 
-		  
-		  catch (Exception e) {
-			 
-		  }
-		  
-		  finally {
-		
-			  close();
-		  }
-		
-		  return singleAssociation;
-		  
-		}
 }
