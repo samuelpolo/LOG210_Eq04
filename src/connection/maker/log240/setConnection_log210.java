@@ -25,21 +25,11 @@ public class setConnection_log210{
 	  private Statement statement = null;
 	  private PreparedStatement preparedStatement = null;
 	  public ResultSet resultSet = null;
-	  private PreparedStatement preparedStatement2 = null;
-	  public ResultSet resultSet2 = null;
 	  
 	  public String[] tabLivre = new String[4];
 	  public String[] tabCompte = new String[4];
 	  public ArrayList<String> ISBNList = new ArrayList<String>();
 	  public ArrayList<String> etatList = new ArrayList<String>();
-	  public ArrayList<String> transferList = new ArrayList<String>();
-	  public String singleISBN = "";
-	  public String singleAcheteur = "";
-	  
-	  public ArrayList<String> singleCompte = new ArrayList<String>();
-	  public ArrayList<String> singleCoop = new ArrayList<String>();
-	  public ArrayList<String> singleLivre = new ArrayList<String>();	  
-	  
 	  
 	  /** Fonction de création d'un compte dans la BDD
 	   * 
@@ -101,37 +91,6 @@ public class setConnection_log210{
 		      // Parameters start with 1
 		      preparedStatement.setString(1, nom);
 		      preparedStatement.setString(2, address);
-		      preparedStatement.executeUpdate();
-		  
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
-			  close();
-		  }
-		  
-		 
-	  }
-	  
-	  public void insertTransaction(String gestionnaire, String acheteur, double prix)throws Exception{
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-		      
-		   // PreparedStatements can use variables and are more efficient
-		      preparedStatement = connect
-		          .prepareStatement("insert into  iteration_bdd.transactions values (default, ?, ?, ? , ?)");
-		      // "password, email, type, phone, from iteration_bdd.compte");
-		      // Parameters start with 1
-		      preparedStatement.setString(1, gestionnaire);
-		      preparedStatement.setString(2, acheteur);
-		      preparedStatement.setDouble(3,prix);
-		      preparedStatement.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 		      preparedStatement.executeUpdate();
 		  
 		  } 
@@ -290,7 +249,7 @@ public class setConnection_log210{
 		 
 	  }
 	  
-	  public void insertReservation(String username, int ID, String coop){
+	  public void insertReservation(String username, int ID){
 		  try{
 			  
 		      // This will load the MySQL driver, each DB has its own driver
@@ -327,43 +286,6 @@ public class setConnection_log210{
 		  } 
 		  finally {
 			  close();
-		  }
-		  
-		  //If the coop is not the CoopPrincipale, add a transfert with no dates ready for transfer
-		  if(coop != null && coop != "coopPrincipale" ){
-			  
-			  System.out.println("!!!Le transfert a été initié!!!");
-			  
-			  try{
-				  
-			      // This will load the MySQL driver, each DB has its own driver
-			      Class.forName("com.mysql.jdbc.Driver");
-			      // Setup the connection with the DB
-			      connect = DriverManager
-			          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-			              + "user=sqluser&password=sqluserpw");
-			   // PreparedStatements can use variables and are more efficient
-			      preparedStatement = connect
-			          .prepareStatement("insert into  iteration_bdd.transferts values (default, ?, ?, ?, ?,?)");
-			      
-			      
-			      
-			      // Parameters start with 1
-			      preparedStatement.setString(1, coop);
-			      preparedStatement.setString(2, username);
-			      preparedStatement.setDate(3, null);
-			      preparedStatement.setDate(4, null);
-			      preparedStatement.setString(5, String.valueOf(ID));
-			      preparedStatement.executeUpdate();
-			      
-			      
-			  } 
-			  catch (Exception e) {
-
-			  } 
-			  finally {
-				  close();
-			  }
 		  }
 		  
 		 
@@ -520,96 +442,6 @@ public class setConnection_log210{
 		  return ISBNList;
 	  }
 	  
-	  public ArrayList<String> returnTransfersAExpedier(String coop){
-		  
-		  //Reset the arrayList to be empty
-		  transferList = new ArrayList<String>();
-		  
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-			
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.transferts WHERE coopOriginale = ? ;");		      		   
-		      //System.out.println("avantSetString");
-		      preparedStatement.setString(1, coop);
-		      		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  while(resultSet.next()){
-				  if(resultSet.getDate("dateEnvoi")==null){
-					  transferList.add(String.valueOf(resultSet.getInt("ID")));
-					  transferList.add(resultSet.getString("coopOriginale"));
-					  transferList.add(resultSet.getString("usernameAcheteur"));
-					  transferList.add(String.valueOf(resultSet.getInt("idAssociation")));	
-				  }
-			  }		      				      
-			  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-
-			  close();
-		  }
-
-		  return transferList;
-	  }
-	  
-public ArrayList<String> returnTransfersARecevoir(String coop){
-		  
-		  //Reset the arrayList to be empty
-		  transferList = new ArrayList<String>();
-		  
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-			
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.transferts;");		      		   
-		      //System.out.println("avantSetString");
-
-		      
-		      System.out.println("right before the executeQuery in getTransfert à Recevoir");
-		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  while(resultSet.next()){
-				  if(resultSet.getDate("dateArrive")==null&&resultSet.getDate("dateEnvoi")!=null){
-					  transferList.add(String.valueOf(resultSet.getInt("ID")));
-					  System.out.println(resultSet.getInt("ID"));
-					  transferList.add(resultSet.getString("coopOriginale"));
-					  System.out.println(resultSet.getString("coopOriginale"));
-					  transferList.add(resultSet.getString("usernameAcheteur"));
-					  System.out.println(resultSet.getString("usernameAcheteur"));
-					  transferList.add(String.valueOf(resultSet.getInt("idAssociation")));	
-					  System.out.println(resultSet.getInt("idAssociation"));
-				  }
-			  }		      				      
-			  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-
-			  close();
-		  }
-
-		  return transferList;
-	  }
-	  
 	  
 	  
 	  public ArrayList<String> returnAssociationContaining(String ISBN){
@@ -644,7 +476,6 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 					  etatList.add(Integer.toString(resultSet.getInt("etat")));
 					  etatList.add(resultSet.getString("username"));
 					  etatList.add(Integer.toString(resultSet.getInt("ID")));
-					  etatList.add(testCoop);
 				  }
 			  }
 		      		    			 		  
@@ -705,70 +536,6 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 
 		  return etatList;
 	  }
-	  	
-	  	public ArrayList<String> returnAllReservations(){
-			  
-			  //Reset the arrayList to be empty
-			  etatList = new ArrayList<String>();
-			  
-			  try{
-			      // This will load the MySQL driver, each DB has its own driver
-			      Class.forName("com.mysql.jdbc.Driver");
-			      // Setup the connection with the DB
-			      connect = DriverManager
-			          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-			              + "user=sqluser&password=sqluserpw");
-
-			    //Selecting all books containing the partieTitre in the title column
-			      preparedStatement = connect
-			          .prepareStatement("SELECT * FROM iteration_bdd.reservation;");		      		   
-			      
-			     // preparedStatement.setString(1, null);
-			      
-				  resultSet = preparedStatement.executeQuery();
-				      
-
-					  
-				  while(resultSet.next()){
-					  /*etatList.add(String.valueOf(resultSet.getInt("username")));
-					 */
-					  System.out.println(resultSet.getInt("idAssociation") + " : this is a reservation ID");
-					  
-						  preparedStatement2 = null;
-						  resultSet2 = null;
-						  
-						  preparedStatement2 = connect.
-								  prepareStatement("SELECT * FROM iteration_bdd.associations WHERE ID = ?;");
-						  preparedStatement2.setString(1, String.valueOf(resultSet.getInt("idAssociation")));
-						  
-						  resultSet2 = preparedStatement2.executeQuery();
-						 
-						  
-						  if(resultSet2.next()){
-							  
-							  System.out.println(resultSet2.getInt("id") + " this is the association");
-							  
-							  etatList.add(resultSet.getString("username"));
-							  etatList.add(resultSet.getString("idAssociation"));
-							  //etatList.add(String.valueOf(resultSet2.getInt("ID")));
-							  etatList.add(resultSet2.getString("isbn"));
-							  etatList.add(String.valueOf(resultSet2.getInt("etat")));
-						  }
-						  
-				  }
-				  
-			      		    			 		  
-			  } 
-			  catch (Exception e) {
-				 
-			  } 
-			  finally {
-
-				  close();
-			  }
-
-			  return etatList;
-		  }
 	  
 		 public ArrayList<String> returnAssociationContainingCoopNullParameterISBN(String ISBN){
 			  
@@ -790,7 +557,6 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 			      preparedStatement.setString(1, ISBN);
 			      
 				  resultSet = preparedStatement.executeQuery();
-				  
 				      
 				  while(resultSet.next()){
 					  String testCoop = resultSet.getString("coop");
@@ -959,7 +725,7 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 		    }
 		  }
 	
-	public void changeCoop (String coop, int ID, int etat) throws Exception{
+	public void changeCoop (String coop, int ID) throws Exception{
 		String realID = String.valueOf(ID);
 		int rs;
 		
@@ -973,112 +739,17 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 
 		    //Selecting all books with the right ISBN in the database (there should only be one)
 		      preparedStatement = connect
-		          .prepareStatement("UPDATE iteration_bdd.associations SET coop=? , etat=?  WHERE ID = ? ; ");		      		   
+		          .prepareStatement("UPDATE iteration_bdd.associations SET coop=?  WHERE ID = ? ; ");		      		   
 		      
 		      preparedStatement.setString(1, coop);
-		      preparedStatement.setString(3, realID);
-		      preparedStatement.setInt(2, etat);
+		      preparedStatement.setString(2, realID);
 		      
 		      rs = preparedStatement.executeUpdate();
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
 
-			  close();
-		  }
-	}
-	
-	public void supprimerAssociation(int ID) throws Exception{
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-		      
-		      preparedStatement = connect
-		      .prepareStatement("delete from iteration_bdd.associations where id= ? ; ");
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      preparedStatement.executeUpdate();
-		  
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
-			  close();
-		  }
-		  
-		 
-	}
-	
-	public void supprimerReservationAPartirDAssociation(int ID)throws Exception{
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-				  
-					  preparedStatement2 = null;
-					  resultSet2 = null;
-					  
-					   preparedStatement = connect
-							      .prepareStatement("delete from iteration_bdd.reservation where idAssociation= ? ; ");
-					  preparedStatement.setString(1, String.valueOf(ID));
-					  
-					  preparedStatement.executeUpdate();
-					  			  
-		      		    			 		  
-		  } 
-		  catch (Exception e) {
 			 
-		  } 
-		  finally {
 
-			  close();
-		  }
-	}
-	
-	public String[] getTransaction(int ID) throws Exception{
-		
-		String[] infoTransaction = new String[4];
-		
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books with the right ISBN in the database (there should only be one)
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.transactions WHERE ID= ? ; ");		      		   
 		      
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      
-		      resultSet = preparedStatement.executeQuery();
-		      
-		      if(resultSet.next()){
-		    	  infoTransaction[0] = String.valueOf(resultSet.getInt("id"));
-		    	  infoTransaction[1] = resultSet.getString("gestionnaire");
-		    	  infoTransaction[2] = resultSet.getString("acheteur");
-		    	  infoTransaction[3] = String.valueOf(resultSet.getDouble("montant"));
-		      }
-		      else{
-		    	  infoTransaction[0] = "Something went wrong in the getTransaction() method!!!";
-		    	  infoTransaction[1] = "Something went wrong in the getTransaction() method!!!";
-		    	  infoTransaction[2] = "Something went wrong in the getTransaction() method!!!";
-		    	  infoTransaction[3] = "Something went wrong in the getTransaction() method!!!";
-		      }
-
-		    
-			 		  
+		  
 		  } 
 		  catch (Exception e) {
 			 throw e;
@@ -1087,269 +758,5 @@ public ArrayList<String> returnTransfersARecevoir(String coop){
 
 			  close();
 		  }
-
-		  
-		  return infoTransaction;
-	  }
-	
-	public String getISBNfromAssociationID(String id){
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT isbn FROM iteration_bdd.associations WHERE ID = ?;");		      		   
-		      
-		      preparedStatement.setString(1, id);
-		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  resultSet.next();
-			  
-			  singleISBN = resultSet.getString("isbn");
-	      		    			 		  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-
-			  close();
-		  }
-		
-		return singleISBN;
-	}
-	
-	public void expedierTransfert(int ID) throws Exception{
-		
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books with the right ISBN in the database (there should only be one)
-		      preparedStatement = connect
-		          .prepareStatement("UPDATE iteration_bdd.transferts SET dateEnvoi=? WHERE id = ? ;");		      		   
-		      
-		      preparedStatement.setString(2, String.valueOf(ID));
-		      preparedStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-		      
-		      preparedStatement.executeUpdate();
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
-
-			  close();
-		  }
-	}
-	
-	
-	
-	public void recevoirTransfert(int ID) throws Exception{
-		
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books with the right ISBN in the database (there should only be one)
-		      preparedStatement = connect
-		          .prepareStatement("UPDATE iteration_bdd.transferts SET dateArrive=? WHERE id = ? ;");		      		   
-		      
-		      preparedStatement.setString(2, String.valueOf(ID));
-		      preparedStatement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-		      
-		      preparedStatement.executeUpdate();
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
-
-			  close();
-		  }
-	}
-	
-	public String getAcheteurFromTransfert(int ID) throws Exception{
-		
-		
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books with the right ISBN in the database (there should only be one)
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.transferts WHERE ID= ? ; ");		      		   
-		      
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      
-		      resultSet = preparedStatement.executeQuery();
-		      
-		      resultSet.next();
-		      
-		      singleAcheteur = resultSet.getString("usernameAcheteur");
-
-		      
-
-		    
-			 		  
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
-
-			  close();
-		  }
-
-		  
-		  return singleAcheteur;
-	}
-	
-	public ArrayList<String> getCompteById(int ID){
-		//Reset the arrayList to be empty
-		  singleCompte = new ArrayList<String>();
-
-		  
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-			
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.compte WHERE id = ? ;");		      		   
-		      //System.out.println("avantSetString");
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  while(resultSet.next()){
-				  
-				  singleCompte.add(String.valueOf(resultSet.getInt("ID")));
-				  singleCompte.add(resultSet.getString("password"));
-				  singleCompte.add(resultSet.getString("email"));
-				  singleCompte.add(resultSet.getString("type"));
-				  singleCompte.add(resultSet.getString("phone"));
-
-				  
-			  }		      				      
-			  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-
-			  close();
-		  }
-
-		  return singleCompte;
-	}
-
-
-		public ArrayList<String> getCoopById(int ID){
-		//Reset the arrayList to be empty
-		  singleCoop = new ArrayList<String>();
-	
-		  
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-			
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.cooperative WHERE id = ? ;");		      		   
-		      //System.out.println("avantSetString");
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  while(resultSet.next()){
-				  
-				  singleCoop.add(String.valueOf(resultSet.getInt("ID")));
-				  singleCoop.add(resultSet.getString("nom"));
-				  singleCoop.add(resultSet.getString("address"));			  
-			  }		      				      
-			  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-	
-			  close();
-		  }
-	
-		  return singleCoop;
-	}
-
-
-	public ArrayList<String> getLivreById(int ID){
-	//Reset the arrayList to be empty
-	  singleLivre = new ArrayList<String>();
-	
-	  
-	  try{
-	      // This will load the MySQL driver, each DB has its own driver
-	      Class.forName("com.mysql.jdbc.Driver");
-	      // Setup the connection with the DB
-	      connect = DriverManager
-	          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-	              + "user=sqluser&password=sqluserpw");
-		
-	    //Selecting all books containing the partieTitre in the title column
-	      preparedStatement = connect
-	          .prepareStatement("SELECT * FROM iteration_bdd.livre WHERE id = ? ;");		      		   
-	      //System.out.println("avantSetString");
-	      preparedStatement.setString(1, String.valueOf(ID));
-	      		      
-		  resultSet = preparedStatement.executeQuery();
-		  
-		  while(resultSet.next()){
-			  
-			  singleLivre.add(String.valueOf(resultSet.getInt("ID")));
-			  singleLivre.add(resultSet.getString("titre"));
-			  singleLivre.add(resultSet.getString("auteur"));		
-			  singleLivre.add(resultSet.getString("isbn"));			  
-
-			  singleLivre.add(resultSet.getString("prix"));	
-			  singleLivre.add(String.valueOf(resultSet.getString("prix")));
-		  }		      				      
-		  
-	  } 
-	  catch (Exception e) {
-		 
-	  } 
-	  finally {
-	
-		  close();
-	  }
-	
-	  return singleLivre;
 	}
 }
