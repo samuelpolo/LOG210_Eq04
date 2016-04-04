@@ -16,7 +16,11 @@ import com.paypal.base.rest.PayPalRESTException;
 
 public class PaymentLivre {
 
-	String lienPaypal;
+	public static void main(String[] args) {
+		new PaymentLivre();
+
+	}
+	
 	String accessToken;
 	
 	public PaymentLivre(Livre livre)
@@ -70,7 +74,6 @@ public class PaymentLivre {
 				Links link = links.next();
 				if (link.getRel().equalsIgnoreCase("approval_url")) {
 					System.out.println(link.getHref());
-					lienPaypal = link.getHref();
 				}
 			}
 
@@ -79,10 +82,6 @@ public class PaymentLivre {
 			e.printStackTrace();
 		}
 		
-	}
-
-	public String getLienPaypal() {
-		return lienPaypal;
 	}	
 
 }
