@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class reserveFinal
+ * Servlet implementation class transfertAExpedierFinal
  */
-@WebServlet("/reserveFinal")
-public class reserveFinal extends HttpServlet {
+@WebServlet("/transfertAExpedierFinal")
+public class transfertAExpedierFinal extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public reserveFinal() {
+    public transfertAExpedierFinal() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,14 +29,13 @@ public class reserveFinal extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		System.out.println(request.getParameter("id"));
 		
 		int IdURL = Integer.parseInt(request.getParameter("id"));
-		String coop = request.getParameter("coop");
 		
 		request.getSession().setAttribute("idURL", IdURL);
-		request.getSession().setAttribute("coop", coop);
 		//request.setAttribute("product", product); // Will be available as ${product} in JSP
-        request.getRequestDispatcher("reserveFinal.jsp").forward(request, response);
+        request.getRequestDispatcher("TransfertAExpedierFinal.jsp").forward(request, response);
 	}
 
 	/**
@@ -45,8 +44,6 @@ public class reserveFinal extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		
-		
 	}
 
 }

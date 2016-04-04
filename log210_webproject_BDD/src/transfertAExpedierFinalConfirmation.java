@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class reserveFinal
+ * Servlet implementation class transfertAExpedierFinalConfirmation
  */
-@WebServlet("/reserveFinal")
-public class reserveFinal extends HttpServlet {
+@WebServlet("/transfertAExpedierFinalConfirmation")
+public class transfertAExpedierFinalConfirmation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public reserveFinal() {
+    public transfertAExpedierFinalConfirmation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,15 +28,6 @@ public class reserveFinal extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		
-		int IdURL = Integer.parseInt(request.getParameter("id"));
-		String coop = request.getParameter("coop");
-		
-		request.getSession().setAttribute("idURL", IdURL);
-		request.getSession().setAttribute("coop", coop);
-		//request.setAttribute("product", product); // Will be available as ${product} in JSP
-        request.getRequestDispatcher("reserveFinal.jsp").forward(request, response);
 	}
 
 	/**
@@ -45,6 +36,19 @@ public class reserveFinal extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+		
+		int IdURL = (int) request.getSession().getAttribute("idURL");
+		
+		TransferList transferList = (TransferList) request.getSession().getAttribute("transferAExpedier");
+		
+		try {
+			transferList.finaliserExpedition(IdURL);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		request.getRequestDispatcher("optionsGestionnaire.jsp").forward(request, response);
 		
 		
 	}

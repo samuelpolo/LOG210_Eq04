@@ -1,11 +1,12 @@
 
 public class Livre {
 	
-	private String ISBN, auteur, titre, nbPage, ID;
+	private String ISBN, auteur, titre, nbPage, ID,coop;
 	
 	private …tatLivre Ètat;
 	private PrixLivre prix;
 	private String proprio;
+	
 	
 	public Livre()
 	{
@@ -72,6 +73,15 @@ public class Livre {
 		return Ètat.Get…tat();
 	}
 	
+	public String GetCoop()
+	{
+		return coop;
+	}
+	
+	public void setCoop(String coop){
+		this.coop = coop;
+	}
+	
 	public String GetProprio(){
 		return proprio;
 	}
@@ -80,6 +90,7 @@ public class Livre {
 	{
 		return prix.GetPrix();
 	}
+	
 	
 	public double GetPrixVente()
 	{
