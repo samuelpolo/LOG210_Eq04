@@ -32,9 +32,6 @@ public class setConnection_log210{
 	  public String[] tabCompte = new String[4];
 	  public ArrayList<String> ISBNList = new ArrayList<String>();
 	  public ArrayList<String> etatList = new ArrayList<String>();
-	  public ArrayList<String> transferList = new ArrayList<String>();
-	  public String singleISBN = "";
-	  
 	  
 	  /** Fonction de création d'un compte dans la BDD
 	   * 
@@ -285,7 +282,7 @@ public class setConnection_log210{
 		 
 	  }
 	  
-	  public void insertReservation(String username, int ID, String coop){
+	  public void insertReservation(String username, int ID){
 		  try{
 			  
 		      // This will load the MySQL driver, each DB has its own driver
@@ -322,43 +319,6 @@ public class setConnection_log210{
 		  } 
 		  finally {
 			  close();
-		  }
-		  
-		  //If the coop is not the CoopPrincipale, add a transfert with no dates ready for transfer
-		  if(coop != null && coop != "coopPrincipale" ){
-			  
-			  System.out.println("!!!Le transfert a été initié!!!");
-			  
-			  try{
-				  
-			      // This will load the MySQL driver, each DB has its own driver
-			      Class.forName("com.mysql.jdbc.Driver");
-			      // Setup the connection with the DB
-			      connect = DriverManager
-			          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-			              + "user=sqluser&password=sqluserpw");
-			   // PreparedStatements can use variables and are more efficient
-			      preparedStatement = connect
-			          .prepareStatement("insert into  iteration_bdd.transferts values (default, ?, ?, ?, ?,?)");
-			      
-			      
-			      
-			      // Parameters start with 1
-			      preparedStatement.setString(1, coop);
-			      preparedStatement.setString(2, username);
-			      preparedStatement.setDate(3, null);
-			      preparedStatement.setDate(4, null);
-			      preparedStatement.setString(5, String.valueOf(ID));
-			      preparedStatement.executeUpdate();
-			      
-			      
-			  } 
-			  catch (Exception e) {
-
-			  } 
-			  finally {
-				  close();
-			  }
 		  }
 		  
 		 
@@ -515,54 +475,6 @@ public class setConnection_log210{
 		  return ISBNList;
 	  }
 	  
-	  public ArrayList<String> returnTransfersAExpedier(String coop){
-		  
-		  //Reset the arrayList to be empty
-		  transferList = new ArrayList<String>();
-		  
-		  try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-			
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT * FROM iteration_bdd.transferts WHERE coopOriginale = ? ;");		      		   
-		      //System.out.println("avantSetString");
-		      preparedStatement.setString(1, coop);
-		      
-		      System.out.println("right before the executeQuery");
-		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  while(resultSet.next()){
-				  if(resultSet.getDate("dateEnvoi")==null){
-					  transferList.add(String.valueOf(resultSet.getInt("ID")));
-					  System.out.println(resultSet.getInt("ID"));
-					  transferList.add(resultSet.getString("coopOriginale"));
-					  System.out.println(resultSet.getString("coopOriginale"));
-					  transferList.add(resultSet.getString("usernameAcheteur"));
-					  System.out.println(resultSet.getString("usernameAcheteur"));
-					  transferList.add(String.valueOf(resultSet.getInt("idAssociation")));	
-					  System.out.println(resultSet.getInt("idAssociation"));
-				  }
-			  }		      				      
-			  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-
-			  close();
-		  }
-
-		  return transferList;
-	  }
-	  
 	  
 	  
 	  public ArrayList<String> returnAssociationContaining(String ISBN){
@@ -597,7 +509,6 @@ public class setConnection_log210{
 					  etatList.add(Integer.toString(resultSet.getInt("etat")));
 					  etatList.add(resultSet.getString("username"));
 					  etatList.add(Integer.toString(resultSet.getInt("ID")));
-					  etatList.add(testCoop);
 				  }
 			  }
 		      		    			 		  
@@ -1044,65 +955,4 @@ public class setConnection_log210{
 		  
 		  return infoTransaction;
 	  }
-	
-	public String getISBNfromAssociationID(String id){
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books containing the partieTitre in the title column
-		      preparedStatement = connect
-		          .prepareStatement("SELECT isbn FROM iteration_bdd.associations WHERE ID = ?;");		      		   
-		      
-		      preparedStatement.setString(1, id);
-		      
-			  resultSet = preparedStatement.executeQuery();
-			  
-			  resultSet.next();
-			  
-			  singleISBN = resultSet.getString("isbn");
-	      		    			 		  
-		  } 
-		  catch (Exception e) {
-			 
-		  } 
-		  finally {
-
-			  close();
-		  }
-		
-		return singleISBN;
-	}
-	
-	public void expedierTransfert(int ID) throws Exception{
-		
-		try{
-		      // This will load the MySQL driver, each DB has its own driver
-		      Class.forName("com.mysql.jdbc.Driver");
-		      // Setup the connection with the DB
-		      connect = DriverManager
-		          .getConnection("jdbc:mysql://localhost/iteration_bdd?"
-		              + "user=sqluser&password=sqluserpw");
-
-		    //Selecting all books with the right ISBN in the database (there should only be one)
-		      preparedStatement = connect
-		          .prepareStatement("UPDATE iteration_bdd.transferts WHERE id = ? SET dateEnvoi=?");		      		   
-		      
-		      preparedStatement.setString(1, String.valueOf(ID));
-		      preparedStatement.setDate(2, new java.sql.Date(System.currentTimeMillis()));
-		      
-		      preparedStatement.executeUpdate();
-		  } 
-		  catch (Exception e) {
-			 throw e;
-		  } 
-		  finally {
-
-			  close();
-		  }
-	}
 }

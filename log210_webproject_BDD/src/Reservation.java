@@ -30,12 +30,11 @@ public class Reservation
 		
 		if(!étatNom.isEmpty())
 		{
-			for(int i = 0 ; i < étatNom.size() ; i+=4){
+			for(int i = 0 ; i < étatNom.size() ; i+=3){
 				livres.add(new Livre());
 				livres.get(livres.size()-1).SetÉtat(Integer.parseInt(étatNom.get(i)));
 				livres.get(livres.size()-1).SetProprio(étatNom.get(i+1));
 				livres.get(livres.size()-1).SetID(étatNom.get(i+2));
-				livres.get(livres.size()-1).setCoop(étatNom.get(i+3));
 				infoLivre = new RechercheLivre(terme);
 				livres.get(livres.size()-1).SetISBN(infoLivre.GetISBN());
 				livres.get(livres.size()-1).SetAuteur(infoLivre.GetAuteur());
@@ -50,13 +49,12 @@ public class Reservation
 		{
 			ArrayList<String> étatsNoms = connectionBD.returnAssociationContaining(isbn.get(i));
 			
-			for(int j = 0 ; j < étatsNoms.size(); j=j+4)
+			for(int j = 0 ; j < étatsNoms.size(); j=j+3)
 			{
 				livres.add(new Livre());
 				livres.get(livres.size()-1).SetÉtat(Integer.parseInt(étatsNoms.get(j)));
 				livres.get(livres.size()-1).SetProprio(étatsNoms.get(j+1));
 				livres.get(livres.size()-1).SetID(étatsNoms.get(j+2));
-				livres.get(livres.size()-1).setCoop(étatsNoms.get(i+3));
 				infoLivre = new RechercheLivre(isbn.get(i));
 				livres.get(livres.size()-1).SetISBN(infoLivre.GetISBN());
 				livres.get(livres.size()-1).SetAuteur(infoLivre.GetAuteur());
@@ -76,13 +74,11 @@ public class Reservation
 		return livres;
 	}
 	
-	public void finaliserReservation(int ID, String coop){
+	public void finaliserReservation(int ID){
 		
 		setConnection_log210 connectionBD = new setConnection_log210();
 		
-		connectionBD.insertReservation(currentUser, ID, coop);
-		
-		System.out.println(coop);
+		connectionBD.insertReservation(currentUser, ID);
 		
 	}
 }

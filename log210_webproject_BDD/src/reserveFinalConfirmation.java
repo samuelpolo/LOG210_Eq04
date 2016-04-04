@@ -39,11 +39,10 @@ public class reserveFinalConfirmation extends HttpServlet {
 		doGet(request, response);
 		
 		int IdURL = (int) request.getSession().getAttribute("idURL");
-		String coop = (String) request.getSession().getAttribute("coop");
 		
 		Reservation reservation = (Reservation) request.getSession().getAttribute("reservationListe");
 		
-		reservation.finaliserReservation(IdURL,coop);
+		reservation.finaliserReservation(IdURL);
 		
 		request.getRequestDispatcher("AccueilAjoutLivre.jsp").forward(request, response);
 		

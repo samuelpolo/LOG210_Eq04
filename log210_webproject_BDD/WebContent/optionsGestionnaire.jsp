@@ -21,16 +21,6 @@
 	<form action="listeDesReservation" method="post">
       	<input type="submit" value="Afficher les réservations" />
     </form>
-    
-    <br/>
-   	<br/>
-   	<br/>
-   	
-   	Afficher tous les transferts à expédier
-	
-	<form action="listeDesTransfertsAExpedier" method="post">
-      	<input type="submit" value="Afficher les transferts à expédier pour votre Coop" />
-    </form>
 	   		
 </body>
 </html>

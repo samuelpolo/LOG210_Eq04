@@ -49,13 +49,9 @@
 	        <tr>
 	        	<td> Prix : </td>
 	            <td>${livre.GetPrixVente()}</td>	             
-	        </tr>
+	        </tr>	        
 	        <tr>
-	        	<td> Coop : </td>
-	            <td>${livre.GetCoop()}</td>	             
-	        </tr>	 	        
-	        <tr>
-	        	<td><a href="reserveFinal?id=${livre.GetID()}&coop=${livre.GetCoop()}">Réserver cette copie</a></td>
+	        	<td><a href="reserveFinal?id=${livre.GetID()}">Réserver cette copie</a></td>
 	        </tr>
 	    </c:forEach>
 

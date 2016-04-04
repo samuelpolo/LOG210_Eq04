@@ -29,12 +29,11 @@ public class reserveFinal extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
+		System.out.println(request.getParameter("id"));
 		
 		int IdURL = Integer.parseInt(request.getParameter("id"));
-		String coop = request.getParameter("coop");
 		
 		request.getSession().setAttribute("idURL", IdURL);
-		request.getSession().setAttribute("coop", coop);
 		//request.setAttribute("product", product); // Will be available as ${product} in JSP
         request.getRequestDispatcher("reserveFinal.jsp").forward(request, response);
 	}
